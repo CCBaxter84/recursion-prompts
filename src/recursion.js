@@ -7,7 +7,7 @@
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
 let factorial = function(n) {
-  // Edge case -- n is negative number
+  // Edge case -- handle negative number
   if (n < 0) {
     return null;
   }
@@ -17,49 +17,103 @@ let factorial = function(n) {
     return 1;
   }
 
-  // Return recursive call result
+  // Recursive call
   return n * factorial(n - 1);
 };
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
 let sum = function(array) {
-   // Edge case - empty array
-   if (array.length === 0) {
-     return 0;
-   }
+  // Edge case -- handle empty array
+  if (array.length === 0) {
+    return 0;
+  }
 
-   // Copy array to avoid mutation
-   let copy = [...array];
+  // Create copy to avoid mutation of provided array
+  let copy = [...array];
 
-   // Base case
-   if (copy.length === 1) {
-     return copy[0];
-   }
+  // Base case
+  if (copy.length === 1) {
+    return copy.pop();
+  }
 
-   // Return sum of popping array and recursive call
-   return copy.pop() + sum(copy);
+  // Recursive call
+  return copy.pop() + sum(copy);
 };
-
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
-var arraySum = function(array) {
+let arraySum = function(array) {
+  // Edge case
+  if (array.length === 0) {
+    return 0;
+  }
+
+  // Create copy of array to avoid mutation and last index var
+  let copy = [...array];
+  let last = copy.length - 1;
+
+  // Base case
+  if (copy.length === 1 && typeof copy[last] === 'number') {
+    return copy.pop();
+  }
+
+  // Recursive call
+  if (typeof copy[last] === 'number') {
+    return copy.pop() + arraySum(copy);
+  } else if (Array.isArray(copy[last])) {
+    return arraySum(copy.pop()) + arraySum(copy);
+  }
 };
 
 // 4. Check if a number is even.
 var isEven = function(n) {
+  // Base cases
+  if (n === 0) {
+    return true;
+  } else if (n === 1 || n === -1) {
+    return false;
+  }
+
+  // Recursive calls
+  if (n > 1) {
+    return isEven(n - 2);
+  } else if (n < -1) {
+    return isEven(n + 2);
+  }
 };
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
 // sumBelow(7); // 21
 var sumBelow = function(n) {
+  // Base case -- if 0 return 0
+  if (n === 0) {
+    return 0;
+  }
+
+  // Recursive calls -- branch for positive and negative integers
+  if (n > 0) {
+    return n - 1 + sumBelow(n - 1);
+  } else if (n < 0) {
+    return n + 1 + sumBelow(n + 1);
+  }
 };
 
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
-var range = function(x, y) {
+let range = function(x, y) {
+  // Base case -- if x is within 1 of y return empty array;
+    if (x === y || x + 1 === y || x - 1 === y) {
+      return [];
+    }
+  // Recursive calls -- branch depending on if x is > or < y
+  // Concat recursive call to array
+    if (x < y) {
+      return [x + 1].concat(range(x + 1, y));
+    } else if (x > y) {
+      return [x - 1].concat(range(x - 1, y));
+    }
 };
 
 // 7. Compute the exponent of a number.
@@ -68,6 +122,17 @@ var range = function(x, y) {
 // exponent(4,3); // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 var exponent = function(base, exp) {
+  // Edge case -- handle 0 exponent
+  if (exp === 0) {
+    return 1;
+  }
+
+  // Recursive calls -- branch depending on positive or neg exponent
+  if (exp > 0) {
+    return base * exponent(base, exp - 1);
+  } else if (exp < 0) {
+    return exponent(base, exp + 1) / base;
+  }
 };
 
 // 8. Determine if a number is a power of two.
@@ -75,6 +140,16 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 var powerOfTwo = function(n) {
+  // Base cases
+  if (n === 1 || n === 2) {
+    return true;
+  }
+  if (n === 0 || n % 2 !== 0) {
+    return false;
+  }
+
+  // Recursive call
+  return powerOfTwo(n / 2);
 };
 
 // 9. Write a function that reverses a string.
