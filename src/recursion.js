@@ -263,15 +263,53 @@ var divide = function(x, y) {
 // http://www.cse.wustl.edu/~kjg/cse131/Notes/Recursion/recursion.html
 // https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/the-euclidean-algorithm
 var gcd = function(x, y) {
+  // Edge case -- negative numbers
+  if (x < 0 || y < 0) {
+    return null;
+  }
+  // Edge case -- equal numbers
+  if (x === y) {
+    return x;
+  }
+  // Branch based on which number is greater
+  if (x < y) {
+    // Base case
+    if (x === 0) {
+      return y;
+    }
+    // Recursive call
+    return gcd(x, y % x);
+  } else if (x > y) {
+    // Base case
+    if (y === 0) {
+      return x;
+    }
+    // Recursive call
+    return gcd(x % y, y);
+  }
 };
+console.log('Should be 5', gcd(15, 20));
+console.log('Should be 5', gcd(20, 15));
 
 // 15. Write a function that compares each character of two strings and returns true if
 // both are identical.
 // compareStr('house', 'houses') // false
 // compareStr('tomato', 'tomato') // true
 var compareStr = function(str1, str2) {
-};
+  // Edge case -- strings are empty
+  if (str1.length === 0 && str2.length === 0) {
+    return true;
+  }
+  // Base case
+  if (str1[0] !== str2[0]) {
+    return false;
+  } else if (str1.length === 1 && str2.length === 1 && str1[0] === str2[0]) {
+    return true;
+  }
 
+  // Recursive call
+  return compareStr(str1.slice(1), str2.slice(1));
+};
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
