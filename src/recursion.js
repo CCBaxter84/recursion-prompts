@@ -288,8 +288,6 @@ var gcd = function(x, y) {
     return gcd(x % y, y);
   }
 };
-console.log('Should be 5', gcd(15, 20));
-console.log('Should be 5', gcd(20, 15));
 
 // 15. Write a function that compares each character of two strings and returns true if
 // both are identical.
@@ -313,16 +311,38 @@ var compareStr = function(str1, str2) {
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
+  // Base case -- return empty array if string length is 0
+  if (str.length === 0) {
+    return [];
+  }
+
+  // Recursive case -- return first char + recursive call on slice of str
+  let first = str[0];
+  let slice = str.slice(1);
+  return [first].concat( createArray(slice) );
 };
 
 // 17. Reverse the order of an array
 var reverseArr = function(array) {
+  // Base case -- if array is empty return empty array
+  if (array.length === 0) {
+    return [];
+  }
+
+  // Recursive case -- return last char + recursive call on array
+  return [array.pop()].concat(reverseArr(array));
 };
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function(value, length) {
+  // Base case
+  if (length === 0) {
+    return [];
+  }
+  // Recursive case
+  return [value].concat(buildList(value, length - 1));
 };
 
 // 19. Implement FizzBuzz. Given integer n, return an array of the string representations of 1 to n.
