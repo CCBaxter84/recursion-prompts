@@ -351,17 +351,54 @@ var buildList = function(value, length) {
 // For numbers which are multiples of both three and five, output “FizzBuzz” instead of the number.
 // fizzBuzz(5) // ['1','2','Fizz','4','Buzz']
 var fizzBuzz = function(n) {
+  // Base case
+  if (n === 0) {
+    return [];
+  }
+  // Recursive case
+  if (n % 5 === 0 && n % 3 === 0) {
+    return fizzBuzz(n - 1).concat('FizzBuzz');
+  } else if (n % 5 === 0) {
+    return fizzBuzz(n - 1).concat('Buzz');
+  } else if (n % 3 === 0) {
+    return fizzBuzz(n - 1).concat('Fizz');
+  } else {
+    return fizzBuzz(n - 1).concat(n.toString());
+  }
 };
 
 // 20. Count the occurence of a value in a list.
 // countOccurrence([2,7,4,4,1,4], 4) // 3
 // countOccurrence([2,'banana',4,4,1,'banana'], 'banana') // 2
 var countOccurrence = function(array, value) {
+  console.log(array);
+  // Base case
+  if (array.length === 1) {
+    if (array[0] === value) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
+  // Recursive case
+  return countOccurrence([array.pop()], value) + countOccurrence(array, value);
 };
+console.log( countOccurrence([2,7,4,4,1,4], 4) );
 
 // 21. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
 var rMap = function(array, callback) {
+  // Base case
+  if (array.length === 1) {
+    let item = array[0];
+    return [callback(item)];
+  }
+
+  // Recursive case
+  let first = [array[0]];
+  let slice = array.slice(1);
+  return rMap(first, callback).concat(rMap(slice, callback));
 };
 
 // 22. Write a function that counts the number of times a key occurs in an object.
