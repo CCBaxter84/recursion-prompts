@@ -384,7 +384,6 @@ var countOccurrence = function(array, value) {
   // Recursive case
   return countOccurrence([array.pop()], value) + countOccurrence(array, value);
 };
-console.log( countOccurrence([2,7,4,4,1,4], 4) );
 
 // 21. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
@@ -406,18 +405,95 @@ var rMap = function(array, callback) {
 // countKeysInObj(obj, 'r') // 1
 // countKeysInObj(obj, 'e') // 2
 var countKeysInObj = function(obj, key) {
-};
+  // Base case -- value is not an object
+  let values = Object.values(obj);
+  if (values.every(value => typeof value !== 'object')) {
+    if (obj[key]) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
 
+  // Iterate over each k/v pair and use recursive call to drill down into v if it is a nested object
+  // Increment count upon identifying matching keys
+  let count = 0;
+  for (let k in obj) {
+    let val = obj[k];
+    if (k === key) {
+      count++
+    }
+    if (typeof val === 'object') {
+      count += countKeysInObj(val, key);
+    }
+  }
+  return count;
+};
+var obj = {
+  'e': {'x':'y'},
+  't': {
+    'r': { 'e':'r' },
+    'p': { 'y':'r' }
+  },
+  'y':'e'
+};
 // 23. Write a function that counts the number of times a value occurs in an object.
 // var obj = {'e':{'x':'y'},'t':{'r':{'e':'r'},'p':{'y':'r'}},'y':'e'};
 // countValuesInObj(obj, 'r') // 2
 // countValuesInObj(obj, 'e') // 1
 var countValuesInObj = function(obj, value) {
+  // Base case -- value is not an object
+  let values = Object.values(obj);
+  if (values.every(val => typeof val !== 'object')) {
+    let count = 0;
+    values.forEach(val => {
+      if (val === value) {
+        count++;
+      }
+    });
+    return count;
+  }
+
+  // Recursive case
+  let count = 0;
+  for (let key in obj) {
+    let val = obj[key];
+    if (val === value) {
+      count ++;
+    }
+    if (typeof val === 'object') {
+      count += countValuesInObj(val, value);
+    }
+  }
+  return count;
 };
 
 // 24. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, oldKey, newKey) {
+  // Helper function
+  const swap = function(obj, oldK, newK) {
+    if (obj[oldK]) {
+      obj[newK] = obj[oldK];
+      delete obj[oldK];
+    }
+  };
+
+  // Base case -- ensure no more nested objects
+  let values = Object.values(obj);
+  if ( values.every(val => typeof val !== 'object') ) {
+    swap(obj, oldKey, newKey);
+  }
+
+  // Recursive case -- iterate over k/v pairs and use recursion to drill down into nested objects
+  for (let key in obj) {
+    swap(obj, oldKey, newKey);
+    let value = obj[key];
+    if (typeof value === 'object') {
+      replaceKeysInObj(value, oldKey, newKey);
+    }
+  }
+  return obj;
 };
 
 // 25. Get the first n Fibonacci numbers. In the Fibonacci sequence, each subsequent
