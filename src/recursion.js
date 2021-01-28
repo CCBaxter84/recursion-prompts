@@ -477,6 +477,7 @@ var replaceKeysInObj = function(obj, oldKey, newKey) {
       obj[newK] = obj[oldK];
       delete obj[oldK];
     }
+    return;
   };
 
   // Base case -- ensure no more nested objects
