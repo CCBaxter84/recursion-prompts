@@ -503,6 +503,21 @@ var replaceKeysInObj = function(obj, oldKey, newKey) {
 // fibonacci(5); // [0,1,1,2,3,5]
 // Note: The 0 is not counted.
 var fibonacci = function(n) {
+  // Edge case n is 0 or negative
+  if (n <= 0) {
+    return null;
+  }
+
+  // Base case
+  if (n === 1) {
+    return [0, 1];
+  }
+  // Recursive case
+  let result = fibonacci(n - 1);
+  let prev1 = result[result.length - 1];
+  let prev2 = result[result.length - 2];
+  let next = prev1 + prev2;
+  return result.concat(next);
 };
 
 // 26. Return the Fibonacci number located at index n of the Fibonacci sequence.
@@ -511,7 +526,22 @@ var fibonacci = function(n) {
 // nthFibo(7); // 13
 // nthFibo(3); // 2
 var nthFibo = function(n) {
+  // Edge case -- 0 or negative n
+  if (n < 0) {
+    return null;
+  }
+  if (n === 0) {
+    return 0;
+  }
+  // Base case -- n equals 1
+  if (n === 1) {
+    return 1;
+  }
+
+  // Recursive case
+  return nthFibo(n - 1) + nthFibo(n - 2);
 };
+
 
 // 27. Given an array of words, return a new array containing each word capitalized.
 // var words = ['i', 'am', 'learning', 'recursion'];
