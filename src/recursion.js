@@ -547,11 +547,30 @@ var nthFibo = function(n) {
 // var words = ['i', 'am', 'learning', 'recursion'];
 // capitalizedWords(words); // ['I', 'AM', 'LEARNING', 'RECURSION']
 var capitalizeWords = function(array) {
+  // Base case -- if array is empty
+  if (array.length === 0) {
+    return [];
+  }
+
+  // Recursive case
+  let first = array[0].toUpperCase();
+  let rest = array.slice(1);
+  return [first].concat(capitalizeWords(rest));
 };
 
 // 28. Given an array of strings, capitalize the first letter of each index.
 // capitalizeFirst(['car','poop','banana']); // ['Car','Poop','Banana']
 var capitalizeFirst = function(array) {
+  // Base case
+  if (array.length === 0) {
+    return [];
+  }
+
+  // Recursive case
+  let first = array[0];
+  first = first[0].toUpperCase() + first.slice(1);
+  let rest = array.slice(1);
+  return [first].concat( capitalizeFirst(rest) );
 };
 
 // 29. Return the sum of all even numbers in an object containing nested objects.
@@ -564,12 +583,56 @@ var capitalizeFirst = function(array) {
 // };
 // nestedEvenSum(obj1); // 10
 var nestedEvenSum = function(obj) {
+  // Base case -- values don't contain any objects
+  let values = Object.values(obj);
+  if (values.every(value => typeof value !== 'object')) {
+    let sum = 0;
+    // Iterate over each k/v pair and increment sum
+    for (let key in obj) {
+      let val = obj[key];
+      if (val % 2 === 0) {
+        sum += val;
+      }
+    }
+    return sum;
+  }
+
+  // Recursive case -- values contain objects
+  let sum = 0;
+  // Iterate over each k/v pair
+  for (let key in obj) {
+    let val = obj[key];
+    // Increment val if it is even
+    // Recursively call fn on val if it is an object
+    if (typeof val === 'number' && val % 2 === 0) {
+      sum += val;
+    } else if (typeof val === 'object' && !Array.isArray(val)) {
+      sum += nestedEvenSum(val);
+    }
+  }
+  return sum;
 };
 
 // 30. Flatten an array containing nested arrays.
 // flatten([1,[2],[3,[[4]]],5]); // [1,2,3,4,5]
 var flatten = function(array) {
+  // Base case -- array is empty
+  if (array.length === 0) {
+    return [];
+  }
+
+  // Recursive case
+  // Remove first value from array
+  let first = array.shift();
+  // If first is a number, concat it to recursive call on rest of array
+  // If first is array, concat result of recursive call on first to result of recursive call on rest of array
+  if (typeof first === 'number') {
+    return [first].concat( flatten(array) );
+  } else if (Array.isArray(first)) {
+    return flatten(first).concat( flatten(array) );
+  }
 };
+console.log( flatten([1,[2],[3,[[4]]],5]) );
 
 // 31. Given a string, return an object containing tallies of each letter.
 // letterTally('potato'); // {p:1, o:2, t:2, a:1}
