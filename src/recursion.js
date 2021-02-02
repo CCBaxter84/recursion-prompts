@@ -685,13 +685,24 @@ var augmentElements = function(array, aug) {
   let first = augmentElements([array.shift()], aug);;
   let rest = augmentElements(array, aug);
   return first.concat(rest);
-
 };
 
 // 34. Reduce a series of zeroes to a single 0.
 // minimizeZeroes([2,0,0,0,1,4]) // [2,0,1,4]
 // minimizeZeroes([2,0,0,0,1,0,0,4]) // [2,0,1,0,4]
 var minimizeZeroes = function(array) {
+  // Base case
+  if (array.length === 0) {
+    return [];
+  }
+
+  // Recursive case
+  let first = array[0];
+  let rest = array.slice(1);
+  while (first === 0 && rest[0] === 0) {
+    rest = rest.slice(1);
+  }
+  return [first].concat(minimizeZeroes(rest));
 };
 
 // 35. Alternate the numbers in an array between positive and negative regardless of
@@ -699,14 +710,57 @@ var minimizeZeroes = function(array) {
 // alternateSign([2,7,8,3,1,4]) // [2,-7,8,-3,1,-4]
 // alternateSign([-2,-7,8,3,-1,4]) // [2,-7,8,-3,1,-4]
 var alternateSign = function(array) {
+  // Base case
+  if (array.length === 0) {
+    return [];
+  }
+
+  // Recursive case
+  let isLen1 = array.length === 1;
+  let first = Math.abs(array[0]);
+  let second = isLen1 ? null : Math.abs(array[1]);
+  let rest = array.slice(2);
+  let front;
+  if (second !== null) {
+    second = '-' + second.toString();
+    second = parseInt(second);
+    front = [first, second];
+  } else {
+    front = [first];
+  }
+  return front.concat( alternateSign(rest) );
 };
 
 // 36. Given a string, return a string with digits converted to their word equivalent.
 // Assume all numbers are single digits (less than 10).
 // numToText("I have 5 dogs and 6 ponies"); // "I have five dogs and six ponies"
 var numToText = function(str) {
-};
+  // Object for look ups
+  const nums = {
+    1: 'one',
+    2: 'two',
+    3: 'three',
+    4: 'four',
+    5: 'five',
+    6: 'six',
+    7: 'seven',
+    8: 'eight',
+    9: 'nine',
+    0: 'zero'
+  }
 
+  // Base case
+  if (str.length === 0) {
+    return '';
+  }
+
+  // Recursive case
+  let coercedNum = parseInt(str[0]);
+  let isValidNum = Number.isInteger(coercedNum) && coercedNum < 10 && coercedNum >= 0;
+  let first = isValidNum ? nums[coercedNum] : str[0];
+  let rest = str.slice(1);
+  return first.concat( numToText(rest) );
+};
 
 // *** EXTRA CREDIT ***
 
