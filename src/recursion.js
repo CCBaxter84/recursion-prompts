@@ -625,7 +625,7 @@ var flatten = function(array) {
   // Remove first value from array
   let first = array.shift();
   // If first is a number, concat it to recursive call on rest of array
-  // If first is array, concat result of recursive call on first to result of recursive call on rest of array
+  // If first is an array, concat result of recursive call on first to result of recursive call on rest of array
   if (typeof first === 'number') {
     return [first].concat( flatten(array) );
   } else if (Array.isArray(first)) {
