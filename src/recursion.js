@@ -815,5 +815,43 @@ var mergeSort = function(array) {
 // console.log(obj2); // {a:1,b:{bb:{bbb:2}},c:3}
 // obj1 === obj2 // false
 var clone = function(input) {
+  // Base cases
+  if ( !Array.isArray(input) ) {
+    let values = Object.values(input);
+    if (values.every(val => typeof val !== 'object')) {
+      let clone = {};
+      for (let key in input) {
+        clone[key] = input[key];
+      }
+      return clone;
+    } else {
+      // Recursive case
+      let cloned = {};
+      for (let key in input) {
+        // Handle objects
+        if (typeof input[key] === 'object') {
+          console.log('in block')
+          cloned[key] = clone(input[key]);
+        } else {
+          cloned[key] = input[key];
+        }
+      }
+      return cloned;
+    }
+  } else if (Array.isArray(input)) {
+    if (input.every(val => typeof val !== 'object')) {
+      let cloned = input.map(val => val);
+      return cloned;
+    } else {
+      let cloned = input.map(val => {
+        if (typeof val === 'object') {
+          return clone(val);
+        } else {
+          return val;
+        }
+      });
+      return cloned;
+    }
+  }
 };
 
