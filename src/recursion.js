@@ -772,9 +772,37 @@ var tagCount = function(tag, node) {
 // var array = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
 // binarySearch(array, 5) // 5
 // https://www.khanacademy.org/computing/computer-science/algorithms/binary-search/a/binary-search
-var binarySearch = function(array, target, min, max) {
+var binarySearch = function(array, target, min = 0, max = array.length - 1) {
+  //console.log(array, target, min, max);
+  // Edge cases -- target not in array or array is empty
+  if (array.length === 0) {
+    return null;
+  }
+  // Base case -- array of 1
+  if (array.length === 1) {
+    if (array[0] === target) {
+      return max;
+    } else {
+      return null;
+    }
+  }
+  // Recursive case
+  let midpoint = Math.floor(array.length / 2);
+  let inLeftHalf = target < array[midpoint];
+  let inRightHalf = array[midpoint] <= target;
+
+ if (inLeftHalf) {
+    let leftHalf = array.slice(0, midpoint);
+    max = min < midpoint ? midpoint - 1 : min;
+    return binarySearch(leftHalf, target, min, max);
+  } else if (inRightHalf) {
+    let rightHalf = array.slice(midpoint);
+    max = midpoint + min > max ? midpoint + min : max;
+    return binarySearch(rightHalf, target, midpoint + min, max);
+  }
 };
 
+;
 // 39. Write a merge sort function.
 // mergeSort([34,7,23,32,5,62]) // [5,7,23,32,34,62]
 // https://www.khanacademy.org/computing/computer-science/algorithms/merge-sort/a/divide-and-conquer-algorithms
@@ -788,3 +816,4 @@ var mergeSort = function(array) {
 // obj1 === obj2 // false
 var clone = function(input) {
 };
+
